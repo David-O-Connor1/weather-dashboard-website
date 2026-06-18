@@ -1,0 +1,30 @@
+{% extends "layout.html" %}
+
+{% block main_content %}
+<h1>Create Account</h1>
+
+<form action="" method="POST" novalidate>
+    {{ form.hidden_tag() }}
+    {{ form.user.label }}
+    {{ form.user() }}
+    {% for error in form.user.errors %}
+        {{ error }}
+    {% endfor %}
+    <br/>
+    {{ form.password.label }}
+    {{ form.password() }}
+    {% for error in form.password.errors %}
+        {{ error }}
+    {% endfor %}
+    <br/>
+    {{ form.password2.label }}
+    {{ form.password2() }}
+    {% for error in form.password2.errors %}
+        {{ error }}
+    {% endfor %}
+    <br/>
+    {{ form.submit() }}
+</form>
+
+
+{% endblock %}
