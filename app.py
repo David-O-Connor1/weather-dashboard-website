@@ -1,10 +1,11 @@
 from flask import Flask,render_template,redirect,url_for,session,g,request,flash
-from forms import RegistrationForm,LoginForm,AddExpenseForm
+from forms import RegistrationForm,LoginForm,CityWeatherForm
 from database import get_db,close_db
 from werkzeug.security import generate_password_hash,check_password_hash
 from flask_session import Session
 from functools import wraps
 from datetime import datetime
+import requests
 
 app = Flask(__name__)
 app.teardown_appcontext(close_db)
@@ -12,6 +13,8 @@ app.config["SECRET_KEY"] = "my_secret_key"
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
+
+api_key = "ced06c211ddd53a84a7cda43da0e6dba"
 
 @app.before_request
 def load_logged_in_user():
@@ -31,10 +34,32 @@ def home():
     return render_template("index.html")
 
 
-@app.route("/dashboard")
+@app.route("/dashboard",methods=["GET","POST"])
 @login_required
 def dashboard():
-    return render_template("dashboard.html")
+    error = None
+    weather = None
+    form = CityWeatherForm()
+    if form.validate_on_submit():
+        city = form.city.data
+        params = {
+            "q": city,
+            "appid": api_key,
+            "units": "metric"
+        }
+        response = requests.get("https://api.openweathermap.org/data/2.5/weather",params=params)
+
+        if response.status_code == 200:
+            data = response.json()
+            weather = {
+                "city": city,
+                "temperature": data["main"]["temp"],
+                "humidity":data["main"]["humidity"],
+                "condition":data["weather"][0]["description"]
+            }
+        else:
+            error = "city not found"
+    return render_template("dashboard.html",error=error,weather=weather,form=form)
 
 @app.route("/register",methods=["GET","POST"])
 def register():

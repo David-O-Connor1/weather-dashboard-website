@@ -7,15 +7,12 @@ CREATE TABLE users
     password TEXT NOT NULL
 );
 
--- DROP TABLE IF EXISTS expenses;
+DROP TABLE IF EXISTS search_history;
 
--- CREATE TABLE expenses
--- (
---     id INTEGER PRIMARY KEY AUTOINCREMENT,
---     amount TEXT NOT NULL,
---     description TEXT NOT NULL,
---     category INTEGER NOT NULL,
---     date TEXT NOT NULL,
---     user_id INTEGER NOT NULL,
---     FOREIGN KEY(user_id) REFERENCES users(id)
--- );
+CREATE TABLE search_history
+(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    city TEXT NOT NULL,
+    user_id INTEGER NOT NULL,
+    searched_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

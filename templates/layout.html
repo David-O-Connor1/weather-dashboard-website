@@ -9,7 +9,7 @@
     <nav>
         {% if g.user %}
         <p>User id: {{ g.user }} </p>
-            <a href="{{ url_for('dashboard')}}">Expenses</a>
+            <a href="{{ url_for('dashboard')}}">Dashboard</a>
             <a href="{{ url_for('logout')}}">Logout</a>
         {% else %}
             <a href="{{ url_for('register')}}">Register</a>

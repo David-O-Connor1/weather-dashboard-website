@@ -13,3 +13,6 @@ class LoginForm(FlaskForm):
     password = PasswordField("Password:",validators=[InputRequired()])
     submit= SubmitField("Submit")
 
+class CityWeatherForm(FlaskForm):
+    city = StringField("City",validators=[InputRequired()])
+    submit= SubmitField("Submit")   
